@@ -7,8 +7,10 @@ interface State {
 }
 
 interface PostsState {
-    ids: string[]
+    // o(n)
+    ids: string[] // [1, 2, 3, 4]
 
+    // o(1)
     all: Map<string, Post>
 
     loaded: boolean
@@ -24,6 +26,7 @@ class Strore {
     getState() {
         return readonly(this.state)
     }
+
     async fetchPosts() {
         const response = await axios.get<Post[]>('/posts')
         const postsState: PostsState = {

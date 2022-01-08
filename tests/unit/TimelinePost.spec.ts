@@ -28,9 +28,10 @@ function mountTimeline() {
 
 describe('Timeline', () => {
   it('renders today post default', async () => {
-  const wrapper = mountTimeline()
-
-  await flushPromises()
+    const wrapper = mountTimeline()
+    // nextTick -> Vue internal promises
+    // axios -> flushPromises
+    await flushPromises()
 
     expect(wrapper.html()).toContain(today.created.format('Do MMM'))
   })
