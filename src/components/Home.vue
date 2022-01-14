@@ -1,12 +1,12 @@
 <template>
     <suspense>
-        <template #default>
+    <template #default>
         <timeline />
-        </template>
+    </template>
 
-        <template #fallback>
+    <template #fallback>
         <spinner />
-        </template>
+    </template>
     </suspense>
 </template>
 

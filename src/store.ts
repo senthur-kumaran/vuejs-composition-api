@@ -8,21 +8,29 @@ export interface User {
     password: string
 }
 
-interface State {
-    posts: PostsState
-}
+export type Author = Omit<User, 'password'>
 
-export const storeKey = Symbol('store');
-
-interface PostsState {
+interface BaseState<T> {
     // o(n)
     ids: string[] // [1, 2, 3, 4]
 
     // o(1)
-    all: Map<string, Post>
+    all: Map<string, T>
 
     loaded: boolean
 }
+
+type PostsState = BaseState<Post>
+interface AuthorsState extends BaseState<Author> {
+    currentUserId: string | undefined
+}
+
+export interface State {
+    posts: PostsState
+    authors: AuthorsState
+}
+
+export const storeKey = Symbol('store');
 
 export class Store {
     private state: State
@@ -41,12 +49,20 @@ export class Store {
 
     async createPost(post: Post) {
         const response = await axios.post<Post>('/posts', post);
-        this.state.posts.all.set(post.id, response.data);
-        this.state.posts.ids.push(post.id);
+        this.state.posts.all.set(response.data.id, response.data);
+        this.state.posts.ids.push(response.data.id);
+    }
+
+    async updatePost(post: Post) {
+        const response = await axios.put<Post>('/posts', post);
+        this.state.posts.all.set(response.data.id, response.data);
     }
 
     async createUser(user: User) {
-        console.log(user);
+        const response = await axios.post<Author>('/users', user);
+        this.state.authors.all.set(response.data.id, response.data);
+        this.state.authors.ids.push(response.data.id);
+        this.state.authors.currentUserId = response.data.id;
     }
 
     async fetchPosts() {
@@ -64,13 +80,17 @@ export class Store {
     }
 }
 
-const all = new Map<string, Post>()
-
 export const store = new Store({
     posts: {
-        all,
+        all: new Map<string, Post>(),
         ids: [],
         loaded: false
+    },
+    authors: {
+        all: new Map<string, Author>(),
+        ids: [],
+        loaded: false,
+        currentUserId: undefined
     }
 })
 
