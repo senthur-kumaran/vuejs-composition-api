@@ -13,7 +13,7 @@
     "@types/moment": "2.13",
     "axios": "0.21.1",
     "highlight.js": "11.0.1",
-    "lodash": "4.14",
+    "lodash": "4.17",
     "marked": "2.0.3",
     "moment": "^2.13",
     "vue": "^3.0.0",
