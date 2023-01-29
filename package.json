@@ -11,7 +11,7 @@
     "@types/lodash": "4.14",
     "@types/marked": "2.0.3",
     "@types/moment": "2.13",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "highlight.js": "11.0.1",
     "lodash": "4.17",
     "marked": "2.0.3",
